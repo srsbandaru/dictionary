@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Definitions</title>
+
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+    </head>
+    <body>
+        <div class="container">
+            <h1>Dictionary</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="word" class="form-label">Enter the word: </label>
+                    <input name="word" type="text" class="form-control" id="word" placeholder="Enter the Word to Search" required>
+                </div>
+                <button class="btn btn-secondary" type="button" onclick="window.location = '/'">Reset</button>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            {% if dictionary_data|length == 1 %}
+                <div class="mt-3 alert alert-danger">
+                    <p>{{dictionary_data.error}}</p>
+                </div>
+            {% elif dictionary_data|length > 1 %}
+                <h1>{{dictionary_data.search_word}}</h1>
+                {% if dictionary_data.audio %}
+                    <p>
+                        <audio controls>
+                            <source src="{{dictionary_data.audio}}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </p>
+                {% endif %}
+                
+                <p>{{dictionary_data.definitions|safe}}</p>
+            {% else %}
+                <div class="mt-3 alert alert-info">
+                    <p>Please Enter the word and click on search</p>
+                </div>
+            {% endif %}
+            
+
+        </div>
+    </body>
+</html>
